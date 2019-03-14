@@ -6,10 +6,20 @@ var ctx
 var myCanvasWidth, myCanvasHeight
 var testArray = new Array()
 var testMatrix = 8
-var test_x = 0, test_y = 0
 var current_point = 0
 var userinfo
+var advanceMode = 1
+var test_x = 0, test_y = 0
+var currentQuadrant = 1
 var util = require('../../utils/util.js');  
+
+function sleep(delay) {
+  var start = (new Date()).getTime();
+  while ((new Date()).getTime() - start < delay) {
+    continue;
+  }
+}
+
 
 function initArray()
 {
@@ -29,6 +39,142 @@ function initArray()
   }
 }
 
+function isVolidePoint(index)
+{
+  if (testArray[index][2] <= 0) return false
+  if (advanceMode == 0) return true
+
+  var quadrant = 0
+
+  if(testMatrix/2-1-testArray[index][0]>=0)
+  {
+    if(testMatrix/2-1-testArray[index][1]>=0)
+    {
+      quadrant = 2
+    }
+    else
+    {
+      quadrant = 3
+    }
+  }
+  else
+  {
+    if (testMatrix / 2 - 1 - testArray[index][1] >= 0)
+    {
+      quadrant = 1
+    }
+    else
+    {
+      quadrant = 4
+    }
+  }
+
+  if(quadrant != currentQuadrant) return false
+  else return true
+
+}
+
+function calculateCenter()
+{
+  var x, y
+  var canvasSize = myCanvasWidth
+  var line_length = canvasSize / 20
+
+  if (advanceMode == 0 || timer_id == 0) {
+    x = canvasSize / 2
+    y = canvasSize / 2
+  }
+  else {
+    switch (currentQuadrant) {
+      case 1:
+        x = line_length / 2
+        y = canvasSize - line_length / 2
+        break
+      case 2:
+        x = canvasSize - line_length / 2
+        y = canvasSize - line_length / 2
+        break
+      case 3:
+        x = canvasSize - line_length / 2
+        y = line_length / 2
+        break
+      case 4:
+        x = line_length / 2
+        y = line_length / 2
+        break
+      default:
+        x = line_length / 2
+        y = canvasSize - line_length / 2
+        break
+    }
+  }
+  return [x,y]
+}
+function pickNextPoint()
+{
+  //chose next display point
+  do
+  {
+    var i, l, j
+    l = testArray.length
+    i = 0 | (Math.random() * l)
+    j = i
+    var count = 0
+
+    do {
+      if (j >= l) j = 0
+      if (isVolidePoint(j)) break
+      else {
+        j++
+        count++
+      }
+
+    } while (count <= l)
+
+    if (isVolidePoint(j))
+    {
+      var block_size
+      if (advanceMode == 0) {
+        block_size = myCanvasWidth / testMatrix
+      }
+      else {
+        block_size = (myCanvasWidth - myCanvasWidth/20) / (testMatrix / 2)
+      }
+
+      var res = calculateCenter()
+      var c_x = res[0]
+      var c_y = res[1]
+
+      res[0] = testArray[j][0] * block_size + block_size/2 - testMatrix/2*block_size
+      res[1] = testArray[j][1] * block_size + block_size/2 - testMatrix/2*block_size
+
+      res[0]+=c_x
+      res[1]+=c_y
+
+      current_point = j
+      return res
+    }
+    else if(currentQuadrant<4)
+    {
+      for(i=0;i<testArray.length;i++)
+      {
+        if(testArray[i][2]>0) break
+      }
+      if(i>=testArray.length) return null
+      
+      currentQuadrant++
+      console.log(currentQuadrant)
+      drawBackground(ctx)
+      sleep(2000)
+    }
+    else
+    {
+      return null
+    }
+  } while (true)
+
+}
+
 function drawBackground(context)
 {
   //填充背景色
@@ -36,15 +182,20 @@ function drawBackground(context)
   context.fillRect(0, 0, myCanvasWidth, myCanvasHeight);
 
   //画十字线
-  var c_size = myCanvasWidth
-  var line_length = c_size / 20
+  var x,y
+  var res = calculateCenter()
+  x = res[0]
+  y = res[1]
 
+  console.log(x,y)
+
+  var line_length = myCanvasWidth/20
   context.setStrokeStyle('#ffff00')
   context.setLineWidth(2)
-  context.moveTo(c_size / 2 - line_length / 2, c_size / 2)
-  context.lineTo(c_size / 2 + line_length / 2, c_size / 2)
-  context.moveTo(c_size / 2, c_size / 2 - line_length / 2)
-  context.lineTo(c_size / 2, c_size / 2 + line_length / 2)
+  context.moveTo(x - line_length / 2, y)
+  context.lineTo(x + line_length / 2, y)
+  context.moveTo(x, y - line_length / 2)
+  context.lineTo(x, y + line_length / 2)
   context.stroke()
 
   context.draw()
@@ -72,7 +223,6 @@ function onTimer()
 {
   if (timer_count >= timer_end)
   {
-    console.log(timer_end)
     timer_count = 0
     timer_end = max_timer
     if(testArray[current_point][2]>0)
@@ -85,29 +235,12 @@ function onTimer()
   
   if(timer_count == 0)  
   {
-    //chose next display point
-    var i, l, j
-    l = testArray.length
-    i = 0 | (Math.random() * l)
-    j = i
-    var count = 0
-    do {
-      if (j >= l) j = 0
-      if (testArray[j][2] > 0) break
-      else
-      {
-        j++
-        count++
-      } 
-
-    } while (count<=l)
-
-    var block_size = myCanvasWidth / testMatrix
-
-    if (testArray[j][2] > 0) {
-      test_x = testArray[j][0] * block_size + block_size / 2
-      test_y = testArray[j][1] * block_size + block_size / 2
-      current_point = j
+    var res = pickNextPoint()
+  
+    if(res!=null)
+    {
+      test_x = res[0]
+      test_y = res[1]
     }
     else
     {
@@ -197,8 +330,7 @@ Page({
     bigbuttonSize: 100
   },
   onTap: function () {
-    console.log("Tap!");
-  },
+    },
  
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -217,6 +349,11 @@ Page({
         myCanvasHeight = res.windowHeight
       }
     })
+
+    var canvasSize = Math.min(myCanvasWidth, myCanvasHeight)
+    myCanvasWidth = canvasSize
+    myCanvasHeight = canvasSize
+
     this.setData({
       canvasWidth: myCanvasWidth,
       canvasHeight: myCanvasWidth,
@@ -231,6 +368,7 @@ Page({
 
     timer_count = 0
     timer_end = max_timer
+    currentQuadrant = 1
     current_point = 0
   
   },
@@ -298,6 +436,8 @@ Page({
       const innerAudioContext = wx.createInnerAudioContext();
       innerAudioContext.autoplay = true;//音频自动播放设置
       innerAudioContext.src = '/pages/test/start.mp3';//链接到音频的地址
+
+      drawBackground(ctx)
     } 
     else if(timer_count>2)
     {
@@ -305,7 +445,6 @@ Page({
       {
         testArray[current_point][2] *= -1
         timer_end = timer_count + (0 | (Math.random() * 10)) + 8
-        //console.log(testArray[current_point])
         const innerAudioContext = wx.createInnerAudioContext();
         innerAudioContext.autoplay = true;//音频自动播放设置
         innerAudioContext.src = '/pages/test/ok.mp3';//链接到音频的地址

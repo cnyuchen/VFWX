@@ -43,7 +43,7 @@ Page({
     var line_length = c_size / 20
 
     context.setStrokeStyle('#ffff00')
-    context.setLineWidth(1)
+    context.setLineWidth(2)
     context.moveTo(c_size / 2 - line_length / 2, c_size / 2)
     context.lineTo(c_size / 2 + line_length / 2, c_size / 2)
     context.moveTo(c_size / 2, c_size / 2 - line_length / 2)
