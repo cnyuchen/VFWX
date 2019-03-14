@@ -1,0 +1,7 @@
+<canvas style='width:{{canvasWidth}}px; height:{{canvasHeight}}px'  disable-scroll='true' catchtap="onTap" canvas-id="firstCanvas"></canvas>
+<text decode="{{true}}" space="{{true}}">
+&nbsp;
+</text>
+<button bindtap="onTapSave" style="background-color: #eeeeee;border-radius: 25px">保存到相册</button>
+<button open-type='share'style="background-color: #eeeeee;border-radius: 25px">请朋友也测一下！</button>
+<button bindtap="onTapReturn"style="background-color: #eeeeee;border-radius: 25px">返回主界面</button>

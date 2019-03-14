@@ -1,0 +1,15 @@
+<!--index.wxml-->
+<canvas style='width:{{canvasWidth}}px; height:{{canvasHeight}}px'  disable-scroll='true' catchtap="onTap" canvas-id="firstCanvas"></canvas>
+
+<view class="body-view">
+    <slider activeColor="#eb6587" backgroundColor="#bfc8cc" 
+    value="8" min="6" max="16" step="2" data-name="slider" 
+    bindchange="onSliderChange" show-value/>     
+  </view>
+
+  <view class="flex-row" style="display: flex;">
+    <image bindtap="onTapReset"mode="aspectFit" src="reset.png" style="height:{{smallbuttonSize}}px;">重新开始</image>
+    <image bindtap="onTapOK" mode="aspectFit" src='{{button1}}' style="height:{{bigbuttonSize}}px;">OK</image>
+    <image bindtap="onTapEnd"mode="aspectFit" src="continue.png" style="height:{{smallbuttonSize}}px;">结束测试</image> 
+  </view>
+

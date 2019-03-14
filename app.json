@@ -1,0 +1,14 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/test/test",
+    "pages/result/result"
+    ],
+
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "视野快查",
+    "navigationBarTextStyle":"black"
+  }
+}

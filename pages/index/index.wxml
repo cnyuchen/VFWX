@@ -1,0 +1,15 @@
+
+<image
+    style="width:{{titleWidth}}px; height:{{titleHeight}}px;background-color: #eeeeee;border-radius: 25px;"
+    mode="aspectFit"
+    src="title.jpg"
+  >
+</image>
+
+
+
+<button open-type="getUserInfo" bindtap="onTap" style="background-color: #eeeeee;border-radius: 25px">开始测试</button>
+
+  
+    
+
