@@ -9,7 +9,7 @@
 
   <view class="flex-row" style="display: flex;">
     <image bindtap="onTapReset"mode="aspectFit" src="reset.png" style="height:{{smallbuttonSize}}px;">重新开始</image>
-    <image bindtap="onTapOK" mode="aspectFit" src='{{button1}}' style="height:{{bigbuttonSize}}px;">OK</image>
+    <image bindtap="onTapOK" bindtouchstart="onTouchStart" bindtouchend="onTouchEnd" mode="aspectFit" src='{{button1}}' style="height:{{bigbuttonSize}}px;">OK</image>
     <image bindtap="onTapEnd"mode="aspectFit" src="continue.png" style="height:{{smallbuttonSize}}px;">结束测试</image> 
   </view>
 

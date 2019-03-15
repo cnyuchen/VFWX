@@ -8,10 +8,11 @@ var testArray = new Array()
 var testMatrix = 8
 var current_point = 0
 var userinfo
-var advanceMode = 1
+var advanceMode = 0
 var test_x = 0, test_y = 0
 var currentQuadrant = 1
 var util = require('../../utils/util.js');  
+var touchStart = null
 
 function sleep(delay) {
   var start = (new Date()).getTime();
@@ -279,7 +280,7 @@ function onTimer()
         city = " "
         country = " "
       }
-     /*db.collection('counters').add({
+     db.collection('counters').add({
         data: 
         {
           time: time,
@@ -290,7 +291,7 @@ function onTimer()
           country: country,
           user_data: JSON.stringify(testArray)
         }
-      })*/
+      })
         
       wx.redirectTo({
         url: '../result/result'
@@ -370,6 +371,7 @@ Page({
     timer_end = max_timer
     currentQuadrant = 1
     current_point = 0
+    advanceMode = 0
   
   },
   onReady: function () {
@@ -403,7 +405,7 @@ Page({
     }    
   },
   onTapReset: function() {
-    if(timer_id == 0) return
+    /*if(timer_id == 0) return
     var i
     for(i=0;i<testArray.length;i++)
       testArray[i][2] = 1
@@ -412,7 +414,11 @@ Page({
     timer_count = -20
     const innerAudioContext = wx.createInnerAudioContext();
     innerAudioContext.autoplay = true;//音频自动播放设置
-    innerAudioContext.src = '/pages/test/restart.mp3';//链接到音频的地址
+    innerAudioContext.src = '/pages/test/restart.mp3';//链接到音频的地址*/
+
+    wx.redirectTo({
+      url: '../index/index'
+    })
   },
   onTapOK: function() {
 
@@ -433,9 +439,12 @@ Page({
 
       timer_id = setInterval(onTimer, 100)
 
-      const innerAudioContext = wx.createInnerAudioContext();
-      innerAudioContext.autoplay = true;//音频自动播放设置
-      innerAudioContext.src = '/pages/test/start.mp3';//链接到音频的地址
+      if(advanceMode == 0)
+      {
+        const innerAudioContext = wx.createInnerAudioContext();
+        innerAudioContext.autoplay = true;//音频自动播放设置
+        innerAudioContext.src = '/pages/test/start.mp3';//链接到音频的地址
+      }
 
       drawBackground(ctx)
     } 
@@ -471,5 +480,21 @@ Page({
     initArray()
     drawBackground(ctx)
     drawMatrix(ctx)
+  },
+  onTouchStart: function () {
+    touchStart = (new Date()).getTime();
+  },
+  onTouchEnd: function () {
+    if((new Date()).getTime() - touchStart > 4000)
+    {
+      const innerAudioContext = wx.createInnerAudioContext();
+      innerAudioContext.autoplay = true;//音频自动播放设置
+      innerAudioContext.src = '/pages/test/restart.mp3';//链接到音频的地址
+
+      advanceMode = 1
+    }
+
+    touchStart = null
   }
+  
 })
