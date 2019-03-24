@@ -8,11 +8,7 @@ Page({
     canvasWidth: 200,
     canvasHeight: 200
   },
-  onTap: function () {
-    wx.redirectTo({
-      url: '../test/test'
-    })
-  },
+
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
     wx.getSystemInfo({
@@ -66,9 +62,9 @@ Page({
   },
   onHide: function () {
     // 页面隐藏
-    wx.redirectTo({
+    /*wx.redirectTo({
       url: '../index/index'
-    })
+    })*/
   },
   onUnload: function () {
     // 页面关闭

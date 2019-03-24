@@ -1,4 +1,4 @@
-<canvas style='width:{{canvasWidth}}px; height:{{canvasHeight}}px'  disable-scroll='true' catchtap="onTap" canvas-id="firstCanvas"></canvas>
+<canvas style='width:{{canvasWidth}}px; height:{{canvasHeight}}px'  disable-scroll='true'  canvas-id="firstCanvas"></canvas>
 <text decode="{{true}}" space="{{true}}">
 &nbsp;
 </text>
