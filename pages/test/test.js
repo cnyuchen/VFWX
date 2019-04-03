@@ -33,9 +33,10 @@ function initArray()
     for (j = 0; j < testMatrix; j++) {
       x = j * block_size + block_size / 2
       y = i * block_size + block_size / 2
-      if ((Math.pow((x - point), 2) + Math.pow((y - point), 2)) <= Math.pow((point), 2)) {
+      /*if ((Math.pow((x - point), 2) + Math.pow((y - point), 2)) <= Math.pow((point), 2)) {
         testArray.unshift([j, i, 1])
-      }
+      }*/
+      testArray.unshift([j, i, 1])
     }
   }
 }
