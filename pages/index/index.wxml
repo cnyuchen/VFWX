@@ -9,7 +9,7 @@
 
 
 <button open-type="getUserInfo" bindtap="onTap" style="background-color: #eeeeee;border-radius: 25px">开始测试</button>
-
+<button open-type="contact"  style="background-color: #eeeeee;border-radius: 25px">给我们留言</button>
   
     
 
