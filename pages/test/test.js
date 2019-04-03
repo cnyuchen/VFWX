@@ -475,11 +475,14 @@ Page({
     innerAudioContext.src = '/pages/test/continue.mp3';//链接到音频的地址
   },
   onSliderChange: function (e) {
-    testMatrix = e.detail.value
-    //redraw the matrix
-    initArray()
-    drawBackground(ctx)
-    drawMatrix(ctx)
+    if(testMatrix != e.detail.value)
+    {
+      testMatrix = e.detail.value
+      //redraw the matrix
+      initArray()
+      drawBackground(ctx)
+      drawMatrix(ctx)
+    }
   },
   onTouchStart: function () {
     touchStart = (new Date()).getTime();
