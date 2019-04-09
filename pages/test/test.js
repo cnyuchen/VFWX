@@ -13,6 +13,7 @@ var test_x = 0, test_y = 0
 var currentQuadrant = 1
 var util = require('../../utils/util.js');  
 var touchStart = null
+var secondChecked = 0
 
 function sleep(delay) {
   var start = (new Date()).getTime();
@@ -39,6 +40,28 @@ function initArray()
       testArray.unshift([j, i, 1])
     }
   }
+}
+
+function secondCheck()
+{
+  var i 
+  var count = 0
+
+  for(i = 0; i < testArray.length; i++)
+  {
+    if(testArray[i][2] == -3 || testArray[i][2] == 0) break
+    if(testArray[i][2] == -2) count++
+  }
+
+  if(i < testArray.length) return 
+
+  if(count/testArray.length >= 0.2) return
+
+  for (i = 0; i < testArray.length; i++) 
+  {
+    if (testArray[i][2] == -2) testArray[i][2] = 1
+  }
+
 }
 
 function isVolidePoint(index)
@@ -238,6 +261,13 @@ function onTimer()
   if(timer_count == 0)  
   {
     var res = pickNextPoint()
+
+    if(res == null && secondChecked == 0)
+    {
+      secondChecked = 1
+      secondCheck()
+      res = pickNextPoint()
+    }
   
     if(res!=null)
     {
@@ -373,7 +403,7 @@ Page({
     currentQuadrant = 1
     current_point = 0
     advanceMode = 0
-  
+    secondChecked = 0
   },
   onReady: function () {
     // 页面渲染完成
