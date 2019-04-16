@@ -4,7 +4,7 @@
 <view class="body-view">
     <slider activeColor="#eb6587" backgroundColor="#bfc8cc" 
     value="8" min="6" max="16" step="2" data-name="slider" 
-    bindchanging="onSliderChange" show-value/>     
+    bindchanging="onSliderChange"  disabled='{{sliderDisable}}' show-value/>     
   </view>
 
   <view class="flex-row" style="display: flex;">

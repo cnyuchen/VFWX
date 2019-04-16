@@ -359,7 +359,8 @@ Page({
     canvasHeight: 200,
     button1: "start.png",
     smallbuttonSize: 80,
-    bigbuttonSize: 100
+    bigbuttonSize: 100,
+    sliderDisable: false
   },
   onTap: function () {
     },
@@ -458,6 +459,7 @@ Page({
       //change the button picture
       this.setData({
         button1: "ok.png",
+        sliderDisable: "true"
       })
 
       //clear the matrix
